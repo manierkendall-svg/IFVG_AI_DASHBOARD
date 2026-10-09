@@ -1,0 +1,1 @@
+Once price closes through an FVG and later retests it from the other side, treat it as Inverse FVG. Old support becomes resistance and vice versa.

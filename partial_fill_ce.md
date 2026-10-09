@@ -1,0 +1,1 @@
+The 50 percent level of an open FVG is consequential entry. A full fill without inversion weakens continuation.

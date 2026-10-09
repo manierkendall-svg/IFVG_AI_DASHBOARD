@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#12060a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>IFVG_AI_EA: METATRADER 5</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/static/styles.css?v=ux3" />
+</head>
+<body>
+  <header class="title-bar box">
+    <div class="clock-banner" aria-live="polite">
+      <span>NEW YORK / EST</span>
+      <strong id="ny-clock">00:00:00 AM</strong>
+    </div>
+    <h1 id="page-title" class="title-3d">IFVG_AI_EA: METATRADER 5</h1>
+    <p id="model-line" class="muted model-line"></p>
+    <div class="tab-row" role="tablist">
+      <button id="tab-dashboard" class="btn-3d gold tab-btn active" type="button" role="tab" aria-selected="true">DASHBOARD</button>
+      <button id="tab-chat" class="btn-3d white tab-btn" type="button" role="tab" aria-selected="false">CHATROOM</button>
+      <button id="tab-settings" class="btn-3d white tab-btn" type="button" role="tab" aria-selected="false">SETTINGS AND PARAMETERS</button>
+    </div>
+    <div class="link-row">
+      <div id="conn-wrap" class="conn-wrap offline" role="status" aria-live="polite">
+        <span id="conn-light" class="light" aria-hidden="true"></span>
+        <strong id="conn-text">NOT CONNECTED</strong>
+      </div>
+      <button id="btn-ping" class="btn-3d gold" type="button" aria-label="Send startup ping to MetaTrader 5 expert advisor">STARTUP PING EA</button>
+    </div>
+    <p id="ping-msg" class="muted">Startup ping queues a test command. The EA must be attached in MT5 with WebRequest allowed.</p>
+  </header>
+
+  <main id="view-dashboard">
+    <section class="box live-box">
+      <h2 class="head-3d">LIVE ACCOUNT FEED</h2>
+      <div class="stat-grid" aria-live="polite">
+        <div class="stat"><span>P&amp;L</span><strong id="live-pnl">--</strong></div>
+        <div class="stat"><span>Price</span><strong id="live-price">--</strong></div>
+        <div class="stat"><span>Session</span><strong id="live-session">--</strong></div>
+        <div class="stat win"><span>Trades Won</span><strong id="live-won">0</strong></div>
+        <div class="stat loss"><span>Trades Lost</span><strong id="live-lost">0</strong></div>
+        <div class="stat"><span>Equity</span><strong id="live-equity">--</strong></div>
+      </div>
+      <p class="muted" id="live-meta">Waiting for EA heartbeat from MetaTrader 5.</p>
+    </section>
+
+    <section class="box">
+      <h2 class="head-3d">LAST SIGNAL</h2>
+      <div class="hero-split">
+        <div>
+          <h3 id="last-action" class="signal">WAITING</h3>
+          <p id="last-reason">Waiting for the Expert Advisor to send candles or a chart screenshot.</p>
+        </div>
+        <div class="stat-grid mini">
+          <div class="stat"><span>Confidence</span><strong id="last-conf">--</strong></div>
+          <div class="stat"><span>Symbol</span><strong id="last-symbol">--</strong></div>
+          <div class="stat"><span>Source</span><strong id="last-source">--</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2 class="head-3d">CONTROL CENTER</h2>
+      <div class="btn-grid">
+        <button id="btn-open" class="btn-3d green" type="button">OPEN TRADE</button>
+        <button id="btn-close" class="btn-3d red" type="button">CLOSE TRADE</button>
+        <button id="btn-close-all" class="btn-3d red" type="button">CLOSE ALL TRADES</button>
+        <button id="btn-pause" class="btn-3d black" type="button">PAUSE AI</button>
+        <button id="btn-resume" class="btn-3d green" type="button">RESUME AI</button>
+        <button id="btn-rescan" class="btn-3d gold" type="button">RESCAN LIBRARY</button>
+        <button id="btn-demo" class="btn-3d white" type="button">DEMO FVG</button>
+        <button id="btn-save" class="btn-3d white" type="button">SAVE SETTINGS</button>
+      </div>
+      <div class="form-grid">
+        <label>Min accept confidence
+          <input id="min-conf" type="range" min="0.3" max="0.95" step="0.01" />
+        </label>
+        <p class="muted">Threshold: <span id="min-conf-val">0.62</span></p>
+        <label>Default symbol <input id="symbol" type="text" /></label>
+        <label>Default timeframe <input id="timeframe" type="text" /></label>
+        <label>Default lots <input id="lots" type="number" step="0.01" min="0.01" /></label>
+        <label>Open direction
+          <select id="direction">
+            <option value="buy">BUY</option>
+            <option value="sell">SELL</option>
+          </select>
+        </label>
+      </div>
+      <p class="muted" id="lan-url"></p>
+      <p class="muted" id="cmd-msg"></p>
+    </section>
+
+    <section class="box">
+      <h2 class="head-3d">UPLOAD TO DATABASE</h2>
+      <p class="muted">Files become reusable trading memory for chart and price analysis. Not Q&amp;A.</p>
+      <input id="note-title" type="text" placeholder="Playbook title" />
+      <textarea id="note-body" rows="5" placeholder="Rules, FVG lessons, screenshot notes..."></textarea>
+      <div class="btn-grid two">
+        <button id="btn-note" class="btn-3d gold" type="button">MEMORIZE NOTE</button>
+        <label class="btn-3d white file-btn">UPLOAD PDF / IMAGE / TEXT
+          <input id="file" type="file" hidden />
+        </label>
+      </div>
+      <div id="upload-preview" class="upload-preview hidden">
+        <img id="upload-thumb" alt="Document preview" />
+        <div>
+          <strong id="upload-name">No file</strong>
+          <p class="muted" id="upload-size">0 B</p>
+          <div class="progress-track" aria-hidden="true"><div id="upload-bar" class="progress-bar"></div></div>
+          <p class="muted" id="upload-status">Waiting</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2 class="head-3d">DATABASE LIBRARY</h2>
+      <div id="memories" class="list"></div>
+    </section>
+
+    <section class="box">
+      <h2 class="head-history">TRADE HISTORY</h2>
+      <div id="decisions" class="list"></div>
+    </section>
+  </main>
+
+  <main id="view-chat" class="hidden">
+    <section class="box">
+      <h2 class="head-3d">IFVG_AI_CHATROOM</h2>
+      <p class="muted" id="chat-model">Model: --</p>
+      <div id="chat-log" class="chat-log box-inset" aria-live="polite"></div>
+      <textarea id="chat-input" rows="4" maxlength="200000" placeholder="Ask about the EA, document analysis, EURUSD price, or a live signal..."></textarea>
+      <div class="btn-grid two">
+        <button id="btn-chat" class="btn-3d gold" type="button">SEND TO AI</button>
+        <button id="btn-signal" class="btn-3d green" type="button">LIVE EURUSD SIGNAL</button>
+      </div>
+      <p class="muted" id="chat-msg"></p>
+    </section>
+  </main>
+
+  <main id="view-settings" class="hidden">
+    <section class="box">
+      <h2 class="head-3d">SETTINGS AND PARAMETERS</h2>
+      <p class="muted">These prompts are wired directly into Ollama for the EA filter and the chatroom.</p>
+
+      <label>EA PROMPT
+        <textarea id="ea-prompt" class="unlimited" rows="8"></textarea>
+      </label>
+      <div class="btn-grid two">
+        <button id="btn-save-ea-prompt" class="btn-3d gold" type="button">SAVE EA PROMPT</button>
+        <label class="btn-3d white file-btn">UPLOAD EA PROMPT
+          <input id="file-ea-prompt" type="file" hidden />
+        </label>
+      </div>
+      <p class="muted ping-line" id="ping-ea-prompt"></p>
+
+      <label>EA INSTRUCTIONS
+        <textarea id="ea-instructions" class="unlimited" rows="8"></textarea>
+      </label>
+      <div class="btn-grid two">
+        <button id="btn-save-ea-instructions" class="btn-3d gold" type="button">SAVE EA INSTRUCTIONS</button>
+        <label class="btn-3d white file-btn">UPLOAD EA INSTRUCTIONS
+          <input id="file-ea-instructions" type="file" hidden />
+        </label>
+      </div>
+      <p class="muted ping-line" id="ping-ea-instructions"></p>
+
+      <label>CHATROOM PROMPT
+        <textarea id="chat-prompt" class="unlimited" rows="8"></textarea>
+      </label>
+      <div class="btn-grid two">
+        <button id="btn-save-chat-prompt" class="btn-3d gold" type="button">SAVE CHATROOM PROMPT</button>
+        <label class="btn-3d white file-btn">UPLOAD CHATROOM PROMPT
+          <input id="file-chat-prompt" type="file" hidden />
+        </label>
+      </div>
+      <p class="muted ping-line" id="ping-chat-prompt"></p>
+
+      <label>CHATROOM INSTRUCTIONS
+        <textarea id="chat-instructions" class="unlimited" rows="8"></textarea>
+      </label>
+      <div class="btn-grid two">
+        <button id="btn-save-chat-instructions" class="btn-3d gold" type="button">SAVE CHATROOM INSTRUCTIONS</button>
+        <label class="btn-3d white file-btn">UPLOAD CHATROOM INSTRUCTIONS
+          <input id="file-chat-instructions" type="file" hidden />
+        </label>
+      </div>
+      <p class="muted ping-line" id="ping-chat-instructions"></p>
+    </section>
+  </main>
+
+  <script src="/static/app.js?v=ux3"></script>
+</body>
+</html>

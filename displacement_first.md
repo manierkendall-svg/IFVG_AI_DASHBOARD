@@ -1,0 +1,1 @@
+Never accept an FVG trade without a displacement candle. The middle candle of the three-candle pattern must show intent.

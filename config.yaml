@@ -1,0 +1,29 @@
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+ollama:
+  host: "http://127.0.0.1:11434"
+  vision_model: "llava"
+  text_model: "llama3.1"
+  embed_model: "nomic-embed-text"
+  timeout_seconds: 180
+
+brain:
+  dir: "data/brain"
+  knowledge_dir: "data/knowledge"
+  upload_dir: "data/uploads"
+  chart_dir: "data/charts"
+  max_recall: 12
+  min_similarity: 0.12
+
+trading:
+  default_symbol: "EURUSD"
+  default_timeframe: "M15"
+  min_accept_confidence: 0.62
+  fvg_min_gap_atr: 0.15
+  ifvg_fill_ratio: 0.5
+  lookback_bars: 120
+
+security:
+  mt5_shared_key: "change-me-on-windows"

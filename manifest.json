@@ -1,0 +1,15 @@
+{
+  "name": "MT5 Vision RAG Brain",
+  "short_name": "Vision Brain",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070b14",
+  "theme_color": "#070b14",
+  "icons": [
+    {
+      "src": "/static/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
